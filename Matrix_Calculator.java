@@ -1,20 +1,24 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+// Class to handle matrix operations
 class MatrixCalculator {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
         System.out.println("< WELCOME TO THE MATRIX CALCULATOR >");
 
+        // Create an instance of MatrixOperations
         MatrixOperations matrixOperations = new MatrixOperations();
 
         int choice;
         do {
+            // Display the menu and get user choice
             printMenu();
             System.out.println("ENTER YOUR CHOICE BETWEEN (1-5)");
             choice = getUserChoice(sc);
 
+            // Check if the choice is valid, then perform the selected operation
             if (isValidChoice(choice)) {
                 performOperation(matrixOperations, choice, sc);
             } else {
@@ -25,11 +29,13 @@ class MatrixCalculator {
         } while (sc.nextInt() == 1);
     }
 
+    // Display the menu options
     private static void printMenu() {
         System.out.println("--> HERE YOU CAN CALCULATE...");
         System.out.println(" 1) ADDITION (+) \n 2) SUBTRACTION (-) \n 3) MULTIPLICATION (*) \n 4) TRANSPOSE (T) \n 5) INVERSE (I)");
     }
 
+    // Get the user's choice, handle invalid inputs
     private static int getUserChoice(Scanner sc) {
         while (!sc.hasNextInt()) {
             System.out.println("< PLEASE ENTER A VALID INTEGER >");
@@ -38,10 +44,12 @@ class MatrixCalculator {
         return sc.nextInt();
     }
 
+    // Check if the user's choice is within the valid range
     private static boolean isValidChoice(int choice) {
         return choice >= 1 && choice <= 5;
     }
 
+    // Perform the matrix operation based on the user's choice
     private static void performOperation(MatrixOperations matrixOperations, int choice, Scanner sc) {
         switch (choice) {
             case 1:
@@ -63,9 +71,11 @@ class MatrixCalculator {
     }
 }
 
+// Class to handle different matrix operations
 class MatrixOperations {
     private Scanner sc = new Scanner(System.in);
 
+    // Perform matrix addition
     void performSum(Scanner sc) {
         Matrix inputMatrix1 = getInputMatrix("MATRIX 1", sc);
         Matrix inputMatrix2 = getInputMatrix("MATRIX 2", sc);
@@ -80,6 +90,7 @@ class MatrixOperations {
         }
     }
 
+    // Perform matrix subtraction
     void performSubtraction(Scanner sc) {
         Matrix inputMatrix1 = getInputMatrix("MATRIX 1", sc);
         Matrix inputMatrix2 = getInputMatrix("MATRIX 2", sc);
@@ -94,6 +105,7 @@ class MatrixOperations {
         }
     }
 
+    // Perform matrix multiplication
     void performMultiplication(Scanner sc) {
         Matrix inputMatrix1 = getInputMatrix("MATRIX 1", sc);
         Matrix inputMatrix2 = getInputMatrix("MATRIX 2", sc);
@@ -108,6 +120,7 @@ class MatrixOperations {
         }
     }
 
+    // Perform matrix transpose
     void performTranspose(Scanner sc) {
         Matrix inputMatrix = getInputMatrix("MATRIX", sc);
 
@@ -117,6 +130,7 @@ class MatrixOperations {
         result.display();
     }
 
+    // Perform matrix inversion
     void performInverse(Scanner sc) {
         Matrix inputMatrix = getInputMatrix("MATRIX", sc);
 
@@ -134,6 +148,7 @@ class MatrixOperations {
         }
     }
 
+    // Get user input for matrix dimensions and elements
     private Matrix getInputMatrix(String matrixName, Scanner sc) {
         System.out.println(" < FOR " + matrixName + " > ");
         System.out.println("ENTER THE NUMBER OF ROWS: ");
@@ -159,6 +174,7 @@ class MatrixOperations {
         return new Matrix(elements);
     }
 
+    // Get a positive integer from the user
     private int getPositiveInt(Scanner sc) {
         int value;
         do {
@@ -175,17 +191,20 @@ class MatrixOperations {
     }
 }
 
+// Class to represent a matrix and perform basic operations
 class Matrix {
     private int rows;
     private int columns;
     private int[][] elements;
 
+    // Constructor to initialize the matrix with given elements
     public Matrix(int[][] elements) {
         this.rows = elements.length;
         this.columns = elements[0].length;
         this.elements = elements;
     }
 
+    // Perform matrix addition
     Matrix add(Matrix other) {
         if (this.rows == other.rows && this.columns == other.columns) {
             int[][] result = new int[rows][columns];
@@ -200,6 +219,7 @@ class Matrix {
         }
     }
 
+    // Perform matrix subtraction
     Matrix subtract(Matrix other) {
         if (this.rows == other.rows && this.columns == other.columns) {
             int[][] result = new int[rows][columns];
@@ -214,6 +234,7 @@ class Matrix {
         }
     }
 
+    // Perform matrix multiplication
     Matrix multiply(Matrix other) {
         if (this.columns == other.rows) {
             int[][] result = new int[this.rows][other.columns];
@@ -232,6 +253,7 @@ class Matrix {
         }
     }
 
+    // Perform matrix transpose
     Matrix transpose() {
         int[][] result = new int[columns][rows];
         for (int i = 0; i < rows; i++) {
@@ -242,6 +264,7 @@ class Matrix {
         return new Matrix(result);
     }
 
+    // Perform matrix inversion using Gauss-Jordan elimination
    Matrix inverse() {
         // Check if the matrix is square
         if (!isSquare()) {
@@ -288,11 +311,12 @@ class Matrix {
         return new Matrix(inverseElements);
     }
 
-
+    // Check if the matrix is square
     boolean isSquare() {
         return rows == columns;
     }
 
+    // Display the matrix
     void display() {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
